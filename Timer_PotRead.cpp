@@ -10,6 +10,7 @@ RTC_DS3231 rtc;
 int potPin = 36; //ADC1_0 VP
 int valorADC = 0;
 float voltaje = 0;
+float voltajeReal = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -32,17 +33,20 @@ void loop() {
   delay(1000);
 
   int segundo = now.second();
-  int resSegundo = segundo % 5;
+  int resSegundo = segundo % 2;
 
   if (resSegundo == 0){
   valorADC = analogRead(potPin);
   // Convertir a voltaje (0 - 3.3V)
-  voltaje = (valorADC * 3.3) / 4095.0;
+  voltaje = (valorADC * 3.3) / 4095.0; //7.9 es el voltaje de conversión
+  voltajeReal = voltaje * 7.9;
 
   Serial.print("Valor ADC: ");
   Serial.print(valorADC);
   Serial.print(" | Voltaje: ");
-  Serial.println(voltaje, 2); // 2 decimales
+  Serial.print(voltaje, 2); // 2 decimales
+  Serial.print(" | Voltaje Real: ");
+  Serial.println(voltajeReal, 2); // 2 decimales
   }
 
   delay(500);
